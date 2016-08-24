@@ -65,7 +65,7 @@ public class Main2Activity extends AppCompatActivity {
 
         if(!seshActive) {
             seshActive = true;
-            ((TextView) findViewById(R.id.startButton)).setText("Drank");
+            ((TextView) findViewById(R.id.startButton)).setText("Drink");
 
             String prefs = "s " + readFromFile();
             Log.d(TAG, "startSesh: about to send this work order to the BACIntentService :" + prefs);
@@ -104,7 +104,7 @@ public class Main2Activity extends AppCompatActivity {
             alert11.show();
         } else {
             drinks++;
-            ((TextView) findViewById(R.id.totalDrinks)).setText("Total drinks tonight: " + drinks);
+            ((TextView) findViewById(R.id.totalDrinks)).setText("" + drinks);
             double volume = Double.parseDouble(((EditText) findViewById(R.id.drinkVolume)).getText().toString());
             double percent = Double.parseDouble(((EditText) findViewById(R.id.drinkPercent)).getText().toString());
             String drinkInfo = "t " + volume + " " + percent;
@@ -120,6 +120,11 @@ public class Main2Activity extends AppCompatActivity {
     public void goToSettings(View view) {
         startActivity(new Intent(Main2Activity.this, MainActivity.class));
     }
+
+    public void goToGraph(View view) {
+        startActivity(new Intent(Main2Activity.this, graphResults.class));
+    }
+
 
     private String readFromFile() {
 
