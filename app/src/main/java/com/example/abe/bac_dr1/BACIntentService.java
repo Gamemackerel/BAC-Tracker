@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
 
 public class BACIntentService extends IntentService {
@@ -26,8 +27,11 @@ public class BACIntentService extends IntentService {
         String[] userData = msg.split(" ");
 
         //3 possible instructions: start object, take shot, do metabolization calc, stop object
+
         //if the first char marker is s, then follow instructions for starting the BAC app
         if(msg.charAt(0) == 's') {
+
+
             Log.d(TAG, "starting BAC object with these parameters:" + Arrays.toString(userData));
 
             int bodyType = Integer.parseInt(userData[1]);
@@ -39,7 +43,7 @@ public class BACIntentService extends IntentService {
             Log.d(TAG, "BAC object initialized, now I'm going to start the BACUpdateSchedulerIntentService");
 
 
-            //start the UpdateSchedulerIntentService that gives a scheduled work order to update bac once a minute
+            //start the UpdateSchedulerIntentService that gives a scheduled work order to update bac once every 10 seconds
             Intent msgIntent = new Intent(this, BACUpdateSchedulerIntentService.class);
             msgIntent.putExtra(BACUpdateSchedulerIntentService.PARAM_IN_MSG, "");
             startService(msgIntent);
@@ -48,9 +52,10 @@ public class BACIntentService extends IntentService {
             Double percentEth = Double.parseDouble(userData[2]);
             Log.d(TAG, "message recieved from Main2Activity, it wants me to take a drink");
             bac.takeShot(volume, percentEth);
+            bac.absorbUpdate();
+            bac.metabolizeUpdate();
         } else if(msg.charAt(0) == 'm') {
-            //this should be called on a scheduled execution once a minute
-            //this should be called on a scheduled execution once a minute
+            //this should be called on a scheduled execution once every 10 seconds
             //if i wanted to update once a second I would have to change these methods
             Log.d(TAG, "BACInentService: message recieved from updateScheduler, it wants me to update the BAC");
             bac.absorbUpdate();
@@ -58,11 +63,26 @@ public class BACIntentService extends IntentService {
             Log.d(TAG, "I updated the BAC, the new value for BAC is: " + bac.getBAC());
             //Now I should use the updated BAC as a outbound message that can be read by any activity
             //which needs to display the current estimate
+
+
+
         } else if (msg.charAt(0) == 'x') {
             //end sesh
             //not sure if the user should ever manually do this, probably not.
             //maybe could be implemented by deleting the bac object by reassigning it to null
             bac = null;
+        } else if(msg.charAt(0) == 'g') {
+            // the graph activity asked me for graphing data in string form, let me get that from the BAC object
+            // and broadcast it back to the graph activity
+
+            String resultTxt = bac.getGraphData() + " # ";
+            Log.d(TAG, "passing back to grapher activity: " + resultTxt);
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction(graphResults.ResponseReceiver.ACTION_RESP);
+            broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            broadcastIntent.putExtra(PARAM_OUT_MSG, resultTxt);
+            sendBroadcast(broadcastIntent);
+
         }
 
         double thisBAC = bac.getBAC();
@@ -73,6 +93,8 @@ public class BACIntentService extends IntentService {
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
         broadcastIntent.putExtra(PARAM_OUT_MSG, resultTxt);
         sendBroadcast(broadcastIntent);
+
+
 
     }
 }

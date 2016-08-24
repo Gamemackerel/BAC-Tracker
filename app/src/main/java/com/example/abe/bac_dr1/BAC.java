@@ -20,7 +20,11 @@ public class BAC {
    private boolean male;
    private double bodyWater; // in 100s of ml
    private int build;  // between -2 and +2. 0 is average, negatives are fatter, positives are more athletic
-   
+
+   private String dataPoints;
+
+
+
    
    public BAC(double kg, boolean male, int build) {
       this.weight = kg;
@@ -39,7 +43,7 @@ public class BAC {
    }
    
    public void absorbUpdate() {
-      
+      dataPoints += getBAC() + " ";
       double absorbRate = gStomachEthanol * (.25 / 6);
       // what (fractional?) mass of alcohol is absorbed into the blood from the stomach per minute?
       // currently my dummy value estimates that 25% of the alcohol in stomach is absorbed per minute
@@ -74,6 +78,29 @@ public class BAC {
       System.out.println("    BAC ethanol(g) / body water (100ml):      "+ BAC);
       
       return BAC;
+   }
+
+   //returns a string sequential list of BAC values every 10 seconds since start of object, as well as projected BAC values
+   //returns in this format: "x x x x x x | z z z z z z" where each value is a BAC estimation 10 seconds later than the last one.
+   // x is recorded bac values, z is predicted future bac values
+   public String getGraphData(){
+      double gStomachEthanol = this.gStomachEthanol;
+      double gBloodEthanol = this.gBloodEthanol;
+      double BACSim = this.getBAC();
+      String result = dataPoints + "# ";
+      while(BACSim > 0) {
+         result += BACSim + " ";
+
+         double absorbRate = gStomachEthanol * (.25 / 6);
+         gStomachEthanol -= absorbRate;
+         gBloodEthanol += absorbRate;
+
+         double metabRate = (((.00025 /*+- .000083333*/) / 6) * bodyWater);
+         gBloodEthanol -= Math.min(metabRate, gBloodEthanol);
+
+         BACSim = gBloodEthanol / bodyWater;
+      }
+      return result + BACSim;
    }
    
    

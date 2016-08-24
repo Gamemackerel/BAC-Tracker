@@ -51,7 +51,7 @@ public class BACUpdateSchedulerIntentService extends IntentService {
 
     private class LoopTask extends TimerTask {
         public void run() {
-            Log.d(TAG, "UpdateScheduler: Trying to send a work order to BACIntentService. This message will print every 60 seconds.");
+            Log.d(TAG, "UpdateScheduler: Trying to send a work order to BACIntentService. This message will print every 10 seconds.");
             sendMsg();
         }
     }
