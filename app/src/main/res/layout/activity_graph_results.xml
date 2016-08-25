@@ -15,6 +15,25 @@
         android:layout_height="300dip"
         android:id="@+id/graph" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Hours since Start"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/graph"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Poppin bottles in the ice, like a blizzard \n When we drink we do it right, gettin&apos; slizard\n"
+        android:id="@+id/textView12"
+        android:layout_marginTop="55dp"
+        android:layout_below="@+id/textView11"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
 
 

@@ -118,6 +118,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
     public void goToSettings(View view) {
+        Log.d(TAG, "goToSettings: button pressed");
         startActivity(new Intent(Main2Activity.this, MainActivity.class));
     }
 

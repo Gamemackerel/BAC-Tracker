@@ -28,7 +28,9 @@
             android:name=".BACUpdateSchedulerIntentService"
             android:exported="false" />
 
-        <activity android:name=".graphResults"></activity>
+        <activity
+            android:name=".graphResults"
+            android:label="BAC Tracker">></activity>
     </application>
 
 </manifest>

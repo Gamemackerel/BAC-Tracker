@@ -103,19 +103,23 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
             //evaluating gender from radioButtons
-            int genderChoice = ((RadioGroup) findViewById(R.id.gender)).getCheckedRadioButtonId() % 10;
+            int genderChoice = ((RadioGroup) findViewById(R.id.gender)).getCheckedRadioButtonId();
             Log.d(TAG, "gender choice is " + genderChoice);
-            boolean male = (genderChoice == 4);
+            boolean male = (genderChoice == ((RadioButton)findViewById(R.id.rBMale)).getId());
             Log.d(TAG, "are you a male? : " + male);
             //***********************************************************//
 
-            int bodyTypeChoice = ((RadioGroup) findViewById(R.id.BodyType)).getCheckedRadioButtonId() % 10;
-            bodyTypeChoice -= 7;
-            Log.d(TAG, "BodyType int selection is : " + bodyTypeChoice);
+            int bodyTypeChoice = this.getBodyType();
+            Log.d(TAG, "analyzed bodyType choice, you chose: " + bodyTypeChoice);
 
+
+
+
+
+
+            Log.d(TAG, "BodyType int selection is : " + bodyTypeChoice);
             //userWeight
             double userWeightKg = Double.parseDouble(((EditText) findViewById(R.id.userWeight)).getText().toString());
-
             Log.d(TAG, "bodyType:");
             Log.d(TAG, "are you male?: " + male);
             //Write to user data file using the following user specified fields:
@@ -152,6 +156,22 @@ public class MainActivity extends AppCompatActivity {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+    }
+
+
+    private int getBodyType() {
+        ArrayList<RadioButton> l = new ArrayList<RadioButton>();
+        l.add(((RadioButton) findViewById(R.id.radioButtonNeg2)));
+        l.add(((RadioButton) findViewById(R.id.radioButtonNeg1)));
+        l.add(((RadioButton) findViewById(R.id.radioButton0)));
+        l.add(((RadioButton) findViewById(R.id.radioButton1)));
+        l.add(((RadioButton) findViewById(R.id.radioButton2)));
+        for(int i = 0; i < 5; i++) {
+            if(l.get(i).isChecked()) {
+                return i - 2;
+            }
+        }
+        return 0;
     }
 
 
