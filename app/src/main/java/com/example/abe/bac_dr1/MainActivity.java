@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "there is a file that exists already, let me populate the settings");
 
             String[] userData = readFromFile().split(" ");
-
+            Log.d(TAG, "userData[0]: " );
 
             int bodyTypeFromFile = Integer.parseInt(userData[0]) + 2;
 
@@ -101,6 +101,13 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert11 = builder1.create();
             alert11.show();
         } else {
+
+            //KILL BAC OBJECT WHEN SAVING NEW THING
+            Intent msgIntent = new Intent(this, BACIntentService.class);
+            msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, "x");
+            startService(msgIntent);
+
+
 
             //evaluating gender from radioButtons
             int genderChoice = ((RadioGroup) findViewById(R.id.gender)).getCheckedRadioButtonId();

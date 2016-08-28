@@ -1,5 +1,7 @@
 package com.example.abe.bac_dr1;
 
+import android.util.Log;
+
 import java.util.*;
 public class BAC {
    
@@ -12,7 +14,7 @@ public class BAC {
    
    
    
-   
+   private String TAG = "console";
    //metabolization constants
    private double weight; // in kg
 //   private double height;
@@ -21,12 +23,13 @@ public class BAC {
    private double bodyWater; // in 100s of ml
    private int build;  // between -2 and +2. 0 is average, negatives are fatter, positives are more athletic
 
-   private String dataPoints;
+   private ArrayList<Double> dataPoints;
 
 
 
    
    public BAC(double kg, boolean male, int build) {
+       dataPoints = new ArrayList<Double>();
       this.weight = kg;
       this.male = male;
       this.build = build;
@@ -43,14 +46,12 @@ public class BAC {
    }
    
    public void absorbUpdate() {
-      dataPoints += getBAC() + " ";
-      double absorbRate = gStomachEthanol * (.25 / 6);
+       double absorbRate = gStomachEthanol * (.25 / 6);
       // what (fractional?) mass of alcohol is absorbed into the blood from the stomach per minute?
       // currently my dummy value estimates that 25% of the alcohol in stomach is absorbed per minute
        //this is converted to every 10 seconds so (25 / 6)% is absorbed per 10 seconds
-      
-      gStomachEthanol -= absorbRate;
-      gBloodEthanol += absorbRate;
+       gStomachEthanol -= absorbRate;
+       gBloodEthanol += absorbRate;
    }
    
    public void metabolizeUpdate() {
@@ -65,31 +66,30 @@ public class BAC {
 
        //currently I have it updating every 10 seconds which is why I am dividing the minutely rate by 6
       
-      gBloodEthanol -= Math.min(metabRate, gBloodEthanol);
-      gMetabolizedEthanol += Math.min(metabRate, gBloodEthanol);      
+       gBloodEthanol -= Math.min(metabRate, gBloodEthanol);
+       gMetabolizedEthanol += Math.min(metabRate, gBloodEthanol);
+       dataPoints.add(getBAC());
+
+
    }
    
    public double getBAC() {
       double BAC = gBloodEthanol / bodyWater;
       //BAC is percentage by mass of ethanol in g per 100 ml blood 
-      // so 80g ethanol / 100ml bodyWater is legal limit 
-      System.out.println("    total ethanol in stomach (g):             "+ gStomachEthanol);
-      System.out.println("    total ethanol in blood (g):               "+ gBloodEthanol);
-      System.out.println("    BAC ethanol(g) / body water (100ml):      "+ BAC);
-      
+      // so 80g ethanol / 100ml bodyWater is legal limit
+       Log.d(TAG, "getBAC: calculated BAC!   " + BAC);
       return BAC;
    }
 
-   //returns a string sequential list of BAC values every 10 seconds since start of object, as well as projected BAC values
-   //returns in this format: "x x x x x x | z z z z z z" where each value is a BAC estimation 10 seconds later than the last one.
-   // x is recorded bac values, z is predicted future bac values
-   public String getGraphData(){
+
+   public double[] getGraphData(){
+       Log.d(TAG, "getGraphData: fucntion called. should correspond with a single -1 value");
       double gStomachEthanol = this.gStomachEthanol;
       double gBloodEthanol = this.gBloodEthanol;
       double BACSim = this.getBAC();
-      String result = dataPoints + "# ";
+       ArrayList<Double> future = new ArrayList<Double>();
       while(BACSim > 0) {
-         result += BACSim + " ";
+         future.add(BACSim);
 
          double absorbRate = gStomachEthanol * (.25 / 6);
          gStomachEthanol -= absorbRate;
@@ -100,7 +100,16 @@ public class BAC {
 
          BACSim = gBloodEthanol / bodyWater;
       }
-      return result + BACSim;
+       double[] result = new double[dataPoints.size() + future.size() + 1];
+       for (int i = 0; i < dataPoints.size(); i++) {
+           result[i] = dataPoints.get(i);
+       }
+       result[dataPoints.size()] = -1.0;
+       for (int i = 0; i < future.size(); i++) {
+           result[i + dataPoints.size() + 1] = future.get(i);
+       }
+       Log.d(TAG, "getGraphData: calculated graphData successfully!");
+       return result;
    }
    
    

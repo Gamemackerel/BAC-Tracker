@@ -12,6 +12,7 @@ public class BACIntentService extends IntentService {
     private String TAG = "console";
     public static final String PARAM_IN_MSG = "imsg";
     public static final String PARAM_OUT_MSG = "omsg";
+    public static final String DOUBLE_ARRAY = "dub[]";
     private static BAC bac;
 
     public BACIntentService() {
@@ -54,7 +55,7 @@ public class BACIntentService extends IntentService {
             bac.takeShot(volume, percentEth);
             bac.absorbUpdate();
             bac.metabolizeUpdate();
-        } else if(msg.charAt(0) == 'm') {
+        } else if(msg.charAt(0) == 'm' && bac != null) {
             //this should be called on a scheduled execution once every 10 seconds
             //if i wanted to update once a second I would have to change these methods
             Log.d(TAG, "BACInentService: message recieved from updateScheduler, it wants me to update the BAC");
@@ -71,29 +72,26 @@ public class BACIntentService extends IntentService {
             //not sure if the user should ever manually do this, probably not.
             //maybe could be implemented by deleting the bac object by reassigning it to null
             bac = null;
-        } else if(msg.charAt(0) == 'g') {
+        } else if(msg.charAt(0) == 'g' && bac != null) {
             // the graph activity asked me for graphing data in string form, let me get that from the BAC object
             // and broadcast it back to the graph activity
-
-            String resultTxt = bac.getGraphData() + " # ";
-            Log.d(TAG, "passing back to grapher activity: " + resultTxt);
+            //// TODO: modify the following sending code to instead send an array of doubles
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction(graphResults.ResponseReceiver.ACTION_RESP);
             broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            broadcastIntent.putExtra(DOUBLE_ARRAY, bac.getGraphData());
+            sendBroadcast(broadcastIntent);
+        }
+        if(bac != null) {
+            double thisBAC = bac.getBAC();
+            String resultTxt = "" + thisBAC;
+            Log.d(TAG, "passing back to main2activity: BAC is: " + resultTxt);
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction(Main2Activity.ResponseReceiver.ACTION_RESP);
+            broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
             broadcastIntent.putExtra(PARAM_OUT_MSG, resultTxt);
             sendBroadcast(broadcastIntent);
-
         }
-
-        double thisBAC = bac.getBAC();
-        String resultTxt = "" + thisBAC;
-        Log.d(TAG, "passing back to main2activity: BAC is: " + resultTxt);
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction(Main2Activity.ResponseReceiver.ACTION_RESP);
-        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-        broadcastIntent.putExtra(PARAM_OUT_MSG, resultTxt);
-        sendBroadcast(broadcastIntent);
-
 
 
     }

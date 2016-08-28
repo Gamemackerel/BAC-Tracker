@@ -50,12 +50,14 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(receiver);
+    }
 
 
-
-
-
-    //On clicking the *Start Drinking* button
+//On clicking the *Start Drinking* button
     //if the drinking intentservice has not yet begun, create an intent which contains all the
     // necessary parameters for BAC, start it now, and run the BAC class from the intentservice
     // with the work intent I constructed
@@ -165,11 +167,13 @@ public class Main2Activity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             TextView result = (TextView) findViewById(R.id.bloodAlcoholContent);
-            String text = intent.getStringExtra(BACIntentService.PARAM_OUT_MSG);
-            if(text.length() > 6) {
-                text = text.substring(0,6);
+            if(intent.hasExtra(BACIntentService.PARAM_OUT_MSG)) {
+                String text = intent.getStringExtra(BACIntentService.PARAM_OUT_MSG);
+                if (text.length() > 6) {
+                    text = text.substring(0, 6);
+                }
+                result.setText(text);
             }
-            result.setText(text);
         }
     }
 }

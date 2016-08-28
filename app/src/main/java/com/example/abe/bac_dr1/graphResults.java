@@ -18,6 +18,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class graphResults extends AppCompatActivity {
@@ -48,36 +49,25 @@ public class graphResults extends AppCompatActivity {
         msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, "g");
         startService(msgIntent);
 
-//        double y,x;
-//        x = -5.0;
-//        GraphView graph = (GraphView) findViewById(R.id.graph);
-//        series = new LineGraphSeries<DataPoint>();
-//        for(int i = 0; i < 500; i++) {
-//            x = x + 0.1;
-//            y = Math.sin(x);
-//            series.appendData(new DataPoint(x, y), true, 500);
-//        }
-//        graph.addSeries(series);
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(receiver);
+    }
+
+    //// TODO: change reciever to accept array of doubles instead of string
     public class ResponseReceiver extends BroadcastReceiver {
         public static final String ACTION_RESP =
                 "com.mamlambo.intent.action.MESSAGE_PROCESSED";
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String text = intent.getStringExtra(BACIntentService.PARAM_OUT_MSG);
-            Log.d("console", "graph onReceive: " + text);
-            GraphView graph = (GraphView) findViewById(R.id.graph);
-
-            if(text.contains(" # ")) {
-                text = text.substring(4);
-                String[] data = text.split(" # ");
-                String[] history = data[0].trim().split(" ");
-                String[] prediction = data[1].trim().split(" ");
-                Log.d("console", "Graph activity: " + data[0] + " //// " + data[1]);
-
+            if(intent.hasExtra(BACIntentService.DOUBLE_ARRAY)) {
+                double[] graphPoints = intent.getDoubleArrayExtra(BACIntentService.DOUBLE_ARRAY);
+                GraphView graph = (GraphView) findViewById(R.id.graph);
                 double x = 0;
 
 
@@ -95,48 +85,46 @@ public class graphResults extends AppCompatActivity {
                         }
                     }
                 });
-
+                //TODO ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
                 seriesPre = new LineGraphSeries<DataPoint>();
                 seriesPost = new LineGraphSeries<DataPoint>();
                 currentPointSeries = new PointsGraphSeries<DataPoint>();
-//                warning = new LineGraphSeries<DataPoint>();
-//                warning.appendData(new DataPoint(0, .08), true, 2);
-//                warning.appendData(new DataPoint(((history.length + prediction.length) * (1.0 / 360)) * 2, .08), true, 2);
-//                graph.addSeries(warning);
-
+//                                warning = new LineGraphSeries<DataPoint>();
+//                                warning.appendData(new DataPoint(0, .08), true, 2);
+//                                warning.appendData(new DataPoint(((graphPoints.length) * (1.0 / 360)) * 2, .08), true, 2);
+//                                graph.addSeries(warning);
                 Paint paint1 = new Paint();
                 paint1.setStyle(Paint.Style.STROKE);
                 paint1.setStrokeWidth(3);
                 paint1.setARGB(100, 170, 150, 0);
                 seriesPost.setCustomPaint(paint1);
 
+                for(int i = 0; i < graphPoints.length; i++) {
+                    if(graphPoints[i] == -1.0) {
+                        currentPointSeries.appendData(new DataPoint((i+1) * (1.0 / 360), graphPoints[i + 1]), true, 1);
+                    } else {
+                        seriesPre.appendData(new DataPoint(i * (1.0 / 360), graphPoints[i]), true, graphPoints.length);
+                    }
+                }
 
-                for(int i = 0; i < history.length; i++) {
-                    seriesPre.appendData(new DataPoint(x, Double.parseDouble(history[i])), true, history.length);
-                    x += 1.0 / 360;
-                }
-                currentPoint = new DataPoint(x, Double.parseDouble(prediction[0]));
-                currentPointSeries.appendData(currentPoint, true, 1);
-                currentX = x;
-                for(int i = 1; i < prediction.length; i++) {
-                    x += 1.0 / 360;
-                    seriesPost.appendData(new DataPoint(x, Double.parseDouble(prediction[i])), true, prediction.length);
-                }
+
+
+                Log.d("console", "graph onReceive: length: " + graphPoints.length + " " + Arrays.toString(graphPoints));
 
                 graph.addSeries(seriesPre);
                 graph.addSeries(currentPointSeries);
-                graph.addSeries(seriesPost);
-
+//                graph.addSeries(seriesPost);
             } else {
+                                //BELOW: WHEN RECIEVING TEXT INTENT, APPEND TO SERIES PRE
+                String text = intent.getStringExtra(BACIntentService.PARAM_OUT_MSG);
                 double nextData = Double.parseDouble(text);
                 currentX += 1.0 / 360;
                 DataPoint newCurrent = new DataPoint(currentX, nextData);
                 DataPoint[] arbitraryArray = {newCurrent};
                 currentPointSeries.resetData(arbitraryArray);
-                seriesPre.appendData(newCurrent, true, 1000);
+//                seriesPre.appendData(newCurrent, true, 1000);
             }
-
         }
     }
 }
