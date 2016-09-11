@@ -213,12 +213,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="\tThis app allows you to estimate your blood alcohol content using the volume and ABV of the beverage you&apos;re drinking. \n Just change the parameters if neccessary and hit the &apos;Drink&apos; button every time you finish a beverage."
         android:id="@+id/textView9"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/textView"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="false" />
 
 </RelativeLayout>

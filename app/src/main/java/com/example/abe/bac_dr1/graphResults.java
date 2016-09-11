@@ -55,7 +55,11 @@ public class graphResults extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(receiver);
+        try {
+            unregisterReceiver(receiver);
+        } catch (IllegalArgumentException e) {
+
+        }
     }
 
     //// TODO: change reciever to accept array of doubles instead of string
@@ -102,7 +106,9 @@ public class graphResults extends AppCompatActivity {
 
                 for(int i = 0; i < graphPoints.length; i++) {
                     if(graphPoints[i] == -1.0) {
-                        currentPointSeries.appendData(new DataPoint((i+1) * (1.0 / 360), graphPoints[i + 1]), true, 1);
+                        currentX = (i+1) * (1.0 / 360);
+                        currentPointSeries.appendData(new DataPoint(currentX, graphPoints[i + 1]), true, 1);
+
                     } else {
                         seriesPre.appendData(new DataPoint(i * (1.0 / 360), graphPoints[i]), true, graphPoints.length);
                     }
@@ -119,10 +125,11 @@ public class graphResults extends AppCompatActivity {
                                 //BELOW: WHEN RECIEVING TEXT INTENT, APPEND TO SERIES PRE
                 String text = intent.getStringExtra(BACIntentService.PARAM_OUT_MSG);
                 double nextData = Double.parseDouble(text);
-                currentX += 1.0 / 360;
+
                 DataPoint newCurrent = new DataPoint(currentX, nextData);
                 DataPoint[] arbitraryArray = {newCurrent};
                 currentPointSeries.resetData(arbitraryArray);
+                currentX += 1.0 / 360;
 //                seriesPre.appendData(newCurrent, true, 1000);
             }
         }

@@ -75,14 +75,13 @@ public class BACIntentService extends IntentService {
         } else if(msg.charAt(0) == 'g' && bac != null) {
             // the graph activity asked me for graphing data in string form, let me get that from the BAC object
             // and broadcast it back to the graph activity
-            //// TODO: modify the following sending code to instead send an array of doubles
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction(graphResults.ResponseReceiver.ACTION_RESP);
             broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
             broadcastIntent.putExtra(DOUBLE_ARRAY, bac.getGraphData());
             sendBroadcast(broadcastIntent);
         }
-        if(bac != null) {
+        if(bac != null && msg.charAt(0) != 'g') {
             double thisBAC = bac.getBAC();
             String resultTxt = "" + thisBAC;
             Log.d(TAG, "passing back to main2activity: BAC is: " + resultTxt);
