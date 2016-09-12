@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -21,10 +22,10 @@ import java.io.InputStreamReader;
 
 public class Main2Activity extends AppCompatActivity {
 
-    Boolean seshActive = false;
+    static Boolean seshActive = false;
     String TAG = "console";
     private ResponseReceiver receiver;
-    private int drinks;
+    public static int drinks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +51,41 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(ResponseReceiver.ACTION_RESP);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        receiver = new ResponseReceiver();
+        registerReceiver(receiver, filter);
+        if (seshActive) {
+            ((TextView) findViewById(R.id.totalDrinks)).setText(Integer.toString(drinks));
+            ((TextView) findViewById(R.id.startButton)).setText("Drink");
+            ((TextView) findViewById(R.id.bloodAlcoholContent)).setText(Double.toString(BACIntentService.bac.getBAC()).substring(0,6));
+        }
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            unregisterReceiver(receiver);
+        } catch (IllegalArgumentException e) {
 
-//On clicking the *Start Drinking* button
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(receiver);
+        } catch (IllegalArgumentException e) {
+
+        }
+    }
+
+    //On clicking the *Start Drinking* button
     //if the drinking intentservice has not yet begun, create an intent which contains all the
     // necessary parameters for BAC, start it now, and run the BAC class from the intentservice
     // with the work intent I constructed
@@ -65,7 +98,6 @@ public class Main2Activity extends AppCompatActivity {
             ((TextView) findViewById(R.id.startButton)).setText("Drink");
 
             String prefs = "s " + readFromFile();
-            Log.d(TAG, "startSesh: about to send this work order to the BACIntentService :" + prefs);
             //prefs will be the param in msg of the intentService and it will
             //be used to construct a new BAC object in the Intent
 
@@ -105,7 +137,6 @@ public class Main2Activity extends AppCompatActivity {
             double volume = Double.parseDouble(((EditText) findViewById(R.id.drinkVolume)).getText().toString());
             double percent = Double.parseDouble(((EditText) findViewById(R.id.drinkPercent)).getText().toString());
             String drinkInfo = "t " + volume + " " + percent;
-            Log.d(TAG, "takeShot: passing up these drink parameters: " + drinkInfo);
             Intent msgIntent = new Intent(this, BACIntentService.class);
             msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, drinkInfo);
             startService(msgIntent);
@@ -115,12 +146,16 @@ public class Main2Activity extends AppCompatActivity {
 
 
     public void goToSettings(View view) {
-        Log.d(TAG, "goToSettings: button pressed");
         startActivity(new Intent(Main2Activity.this, MainActivity.class));
     }
 
     public void goToGraph(View view) {
-        startActivity(new Intent(Main2Activity.this, graphResults.class));
+        if(seshActive && BACIntentService.bac.getBAC() != 0) {
+            startActivity(new Intent(Main2Activity.this, graphResults.class));
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), "no data to graph", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
 

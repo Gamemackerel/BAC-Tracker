@@ -111,7 +111,17 @@ public class BAC {
        Log.d(TAG, "getGraphData: calculated graphData successfully!");
        return result;
    }
-   
-   
-   
+
+
+    public double getgStomachEthanol() {
+        return gStomachEthanol;
+    }
+
+    public double getgMetabolizedEthanol() {
+        return gMetabolizedEthanol;
+    }
+
+    public double getgBloodEthanol() {
+        return gBloodEthanol;
+    }
 }

@@ -1,7 +1,13 @@
 package com.example.abe.bac_dr1;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -13,7 +19,7 @@ public class BACIntentService extends IntentService {
     public static final String PARAM_IN_MSG = "imsg";
     public static final String PARAM_OUT_MSG = "omsg";
     public static final String DOUBLE_ARRAY = "dub[]";
-    private static BAC bac;
+    public static BAC bac;
 
     public BACIntentService() {
         super("SimpleIntentService");
@@ -90,6 +96,40 @@ public class BACIntentService extends IntentService {
             broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
             broadcastIntent.putExtra(PARAM_OUT_MSG, resultTxt);
             sendBroadcast(broadcastIntent);
+        }
+
+
+        //if the users BAC is estimated to be over the legal limit, give a notification warning the user to not drive
+        if(bac != null && bac.getBAC() >= .08) {
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_stat_nodrive)
+                            .setContentTitle("High Blood Alcohol - DO NOT DRIVE")
+                            .setContentText("Your BAC is about " + Double.toString(bac.getBAC()).substring(0, 5) + "%");
+            // Creates an explicit intent for an Activity in your app
+            Intent resultIntent = new Intent(this, Main2Activity.class);
+
+            // The stack builder object will contain an artificial back stack for the
+            // started Activity.
+            // This ensures that navigating backward from the Activity leads out of
+            // your application to the Home screen.
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            // Adds the back stack for the Intent (but not the Intent itself)
+            stackBuilder.addParentStack(Main2Activity.class);
+            // Adds the Intent that starts the Activity to the top of the stack
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            // mId allows you to update the notification later on.
+            int mId = 0;
+            mNotificationManager.notify(mId, mBuilder.build());
+
         }
 
 

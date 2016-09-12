@@ -132,7 +132,9 @@
             android:text="Male"
             android:id="@+id/rBMale"
             android:checked="false"
-            android:layout_weight="0.36" />
+            android:layout_weight="0.36"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp" />
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -140,7 +142,9 @@
             android:text="Female"
             android:id="@+id/rBFemale"
             android:checked="false"
-            android:layout_weight="0"/>
+            android:layout_weight="0"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp" />
     </RadioGroup>
 
     <TextView

@@ -10,10 +10,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="User Settings"></activity>
+            android:label="User Settings"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Main2Activity"
-            android:label="BAC Tracker">
+            android:label="BAC Tracker"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -4,9 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +17,6 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.util.Arrays;
-import java.util.Date;
 
 public class graphResults extends AppCompatActivity {
 
@@ -49,7 +46,10 @@ public class graphResults extends AppCompatActivity {
         msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, "g");
         startService(msgIntent);
 
-
+        ((TextView) findViewById(R.id.graphBac)).setText("Your current BAC is around: " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6));
+        ((TextView) findViewById(R.id.gStom)).setText("There is approximately " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g ethanol in your stomach");
+        ((TextView) findViewById(R.id.gBlood)).setText("There is approximately " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g ethanol in your bloodstream");
+        ((TextView) findViewById(R.id.gMet)).setText("You have fully metabolized approximately " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g ethanol");
     }
 
     @Override
@@ -131,6 +131,12 @@ public class graphResults extends AppCompatActivity {
                 currentPointSeries.resetData(arbitraryArray);
                 currentX += 1.0 / 360;
 //                seriesPre.appendData(newCurrent, true, 1000);
+
+
+                ((TextView) findViewById(R.id.graphBac)).setText("Your current BAC is around: " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6) + "%");
+                ((TextView) findViewById(R.id.gStom)).setText("There is approximately " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g ethanol in your stomach");
+                ((TextView) findViewById(R.id.gBlood)).setText("There is approximately " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g ethanol in your bloodstream");
+                ((TextView) findViewById(R.id.gMet)).setText("You have fully metabolized approximately " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g ethanol");
             }
         }
     }

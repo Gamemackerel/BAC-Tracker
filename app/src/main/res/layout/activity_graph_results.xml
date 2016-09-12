@@ -28,10 +28,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Poppin bottles in the ice, like a blizzard \n When we drink we do it right, gettin&apos; slizard\n"
-        android:id="@+id/textView12"
-        android:layout_marginTop="55dp"
+        android:text="Current BAC: "
+        android:id="@+id/graphBac"
         android:layout_below="@+id/textView11"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="104dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Ethanol Consumed:"
+        android:id="@+id/gStom"
+        android:layout_below="@+id/graphBac"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Ethanol Consumed:"
+        android:id="@+id/gBlood"
+        android:layout_below="@+id/gStom"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Ethanol Consumed:"
+        android:id="@+id/gMet"
+        android:layout_below="@+id/gBlood"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
