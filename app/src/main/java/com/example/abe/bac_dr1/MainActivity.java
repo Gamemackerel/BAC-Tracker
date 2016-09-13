@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
             Intent msgIntent = new Intent(this, BACIntentService.class);
             msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, "x");
             startService(msgIntent);
-
-
+            Main2Activity.seshActive = false;
+            Main2Activity.drinks = 0;
 
             //evaluating gender from radioButtons
             int genderChoice = ((RadioGroup) findViewById(R.id.gender)).getCheckedRadioButtonId();
