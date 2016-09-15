@@ -16,4 +16,4 @@ but if a drinker is using my app and sees an concrete notification telling them 
 a relatively accurate estimation of their BAC, it is my hope that they will be more likely to take a taxi home.
 
 
-[![Video Demo](i.imgur.com/CrcsNsg.png)](https://www.youtube.com/watch?v=cKxt05lS9II)
+[![Video Demo](http://i.imgur.com/CrcsNsg.png)](https://www.youtube.com/watch?v=cKxt05lS9II)
