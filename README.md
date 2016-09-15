@@ -3,7 +3,7 @@ This Android Studio project is my first attempt at creating a complete mobile ap
 The app is designed for alcohol drinkers, and it seeks to provide a simple and convienent way to keep track of a
 user's Blood Alcohol Content as they engage in a session of drinking. 
 
-You may have heard of the 'one drink an hour' rule for determining whether a drinker is safe to drive with their current BAC.
+You may have heard of the 'one drink an hour' rule for determining whether a drinker is safe to drive based on how many drinks they had.
 My app provides a more precise determination of whether a drinker is safe to drive by calculating an estimation
 of a user's BAC live using the known pharmokinetics of the absorbtion of ethanol, information about the user's body, and
 the type and volume of beverage they are drinking.
