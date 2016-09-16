@@ -5,8 +5,7 @@ user's Blood Alcohol Content as they engage in a session of drinking.
 
 You may have heard of the 'one drink an hour' rule for determining whether a drinker is safe to drive based on how many drinks they had.
 My app provides a more precise determination of whether a drinker is safe to drive by calculating an estimation
-of a user's BAC live using the known pharmokinetics of the absorbtion of ethanol, information about the user's body, and
-the type and volume of beverage they are drinking.
+of a user's BAC live using the known pharmokinetics of the absorbtion and metabolization of ethanol, information about the user's body, and the type and volume of beverage they are drinking.
 
 My goal for this app is to provide for drinkers a fun app that they can use while drinking to "see how drunk they are" and
  at the same time, should their BAC get near or above the legal limit, provide an assertive suggestion that 
