@@ -67,7 +67,6 @@ public class graphResults extends AppCompatActivity {
         }
     }
 
-    //// TODO: change reciever to accept array of doubles instead of string
     public class ResponseReceiver extends BroadcastReceiver {
         public static final String ACTION_RESP =
                 "com.mamlambo.intent.action.MESSAGE_PROCESSED";
@@ -77,8 +76,6 @@ public class graphResults extends AppCompatActivity {
             if(intent.hasExtra(BACIntentService.DOUBLE_ARRAY)) {
                 double[] graphPoints = intent.getDoubleArrayExtra(BACIntentService.DOUBLE_ARRAY);
                 GraphView graph = (GraphView) findViewById(R.id.graph);
-                double x = 0;
-
                 GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
                 gridLabel.setLabelVerticalWidth(65);
 
@@ -96,7 +93,7 @@ public class graphResults extends AppCompatActivity {
                             Calendar k = Calendar.getInstance();
                             k.setTimeInMillis(start + millisAdd);
                             Log.d("time", "new Time: " + k.getTime());
-                            DateFormat df = new SimpleDateFormat("h:mma");
+                            DateFormat df = new SimpleDateFormat("h:mm");
                             return df.format(k.getTime());
                         } else {
                             // show y values without the begginning 0
@@ -109,7 +106,6 @@ public class graphResults extends AppCompatActivity {
                         }
                     }
                 });
-                //TODO ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
                 seriesPre = new LineGraphSeries<DataPoint>();
                 seriesPost = new LineGraphSeries<DataPoint>();
@@ -120,17 +116,18 @@ public class graphResults extends AppCompatActivity {
 //                                graph.addSeries(warning);
                 Paint paint1 = new Paint();
                 paint1.setStyle(Paint.Style.STROKE);
-                paint1.setStrokeWidth(3);
-                paint1.setARGB(100, 170, 150, 0);
-                seriesPost.setCustomPaint(paint1);
-
+                paint1.setStrokeWidth(5);
+                paint1.setARGB(100, 255, 0, 0);
+                seriesPre.setCustomPaint(paint1);
+                int x = 0;
                 for(int i = 0; i < graphPoints.length; i++) {
                     if(graphPoints[i] == -1.0) {
-                        currentX = (i+1) * (1.0 / 360);
+                        currentX = (i + 1) * (1.0 / 360);
                         currentPointSeries.appendData(new DataPoint(currentX, graphPoints[i + 1]), true, 1);
 
                     } else {
-                        seriesPre.appendData(new DataPoint(i * (1.0 / 360), graphPoints[i]), true, graphPoints.length);
+                        seriesPre.appendData(new DataPoint((x) * (1.0 / 360), graphPoints[i]), true, graphPoints.length);
+                        x++;
                     }
                 }
 
@@ -145,10 +142,10 @@ public class graphResults extends AppCompatActivity {
                                 //BELOW: WHEN RECIEVING TEXT INTENT, APPEND TO SERIES PRE
                 String text = intent.getStringExtra(BACIntentService.PARAM_OUT_MSG);
                 double nextData = Double.parseDouble(text);
-                currentX += 1.0 / 360;
                 DataPoint newCurrent = new DataPoint(currentX, nextData);
                 DataPoint[] arbitraryArray = {newCurrent};
                 currentPointSeries.resetData(arbitraryArray);
+                currentX += 1.0 / 360;
 //                seriesPre.appendData(newCurrent, true, 1000);
 
 
