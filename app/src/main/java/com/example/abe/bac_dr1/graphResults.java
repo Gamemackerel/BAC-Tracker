@@ -12,11 +12,15 @@ import android.widget.TextView;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class graphResults extends AppCompatActivity {
 
@@ -27,6 +31,7 @@ public class graphResults extends AppCompatActivity {
     DataPoint currentPoint;
 
     double currentX;
+    public static String TAG =  "console";
 
     private ResponseReceiver receiver;
 
@@ -46,10 +51,10 @@ public class graphResults extends AppCompatActivity {
         msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, "g");
         startService(msgIntent);
 
-        ((TextView) findViewById(R.id.graphBac)).setText("Your current BAC is around: " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6));
-        ((TextView) findViewById(R.id.gStom)).setText("There is approximately " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g ethanol in your stomach");
-        ((TextView) findViewById(R.id.gBlood)).setText("There is approximately " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g ethanol in your bloodstream");
-        ((TextView) findViewById(R.id.gMet)).setText("You have fully metabolized approximately " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g ethanol");
+        ((TextView) findViewById(R.id.graphBac)).setText("Current BAC:  " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6) + "%");
+        ((TextView) findViewById(R.id.gStom)).setText("Ethanol in stomach:         " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g");
+        ((TextView) findViewById(R.id.gBlood)).setText("Ethanol in bloodstream:  " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g");
+        ((TextView) findViewById(R.id.gMet)).setText("Ethanol metabolized:       " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g");
     }
 
     @Override
@@ -74,18 +79,33 @@ public class graphResults extends AppCompatActivity {
                 GraphView graph = (GraphView) findViewById(R.id.graph);
                 double x = 0;
 
+                GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
+                gridLabel.setLabelVerticalWidth(65);
 
-                //TODO: modify the x label to display x + timeStarted
-                graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+                gridLabel.setLabelFormatter(new DefaultLabelFormatter() {
                     @Override
                     public String formatLabel(double value, boolean isValueX) {
                         if (isValueX) {
-                            // show normal x values
+                            // show hh:mm instead of x values
                             Double add = Double.parseDouble(super.formatLabel(value, isValueX));
-                            return super.formatLabel(value, isValueX);
+                            Log.d("time", "hours add: " + add);
+                            long millisAdd = Math.round(add * 3.6 * (Math.pow(10,6)));
+                            Log.d("time", "start time: " + Main2Activity.c.getTime());
+                            long start = Main2Activity.c.getTimeInMillis();
+                            Log.d("time", "start time millis: " + Main2Activity.c.getTimeInMillis());
+                            Calendar k = Calendar.getInstance();
+                            k.setTimeInMillis(start + millisAdd);
+                            Log.d("time", "new Time: " + k.getTime());
+                            DateFormat df = new SimpleDateFormat("h:mma");
+                            return df.format(k.getTime());
                         } else {
-                            // show currency for y values
-                            return super.formatLabel(value, isValueX);
+                            // show y values without the begginning 0
+                            //also do not show 0% at the origin
+                            if(Double.parseDouble(super.formatLabel(value,isValueX)) == 0) {
+                                return null;
+                            } else {
+                                return super.formatLabel(value, isValueX).substring(1) + "%";
+                            }
                         }
                     }
                 });
@@ -125,18 +145,17 @@ public class graphResults extends AppCompatActivity {
                                 //BELOW: WHEN RECIEVING TEXT INTENT, APPEND TO SERIES PRE
                 String text = intent.getStringExtra(BACIntentService.PARAM_OUT_MSG);
                 double nextData = Double.parseDouble(text);
-
+                currentX += 1.0 / 360;
                 DataPoint newCurrent = new DataPoint(currentX, nextData);
                 DataPoint[] arbitraryArray = {newCurrent};
                 currentPointSeries.resetData(arbitraryArray);
-                currentX += 1.0 / 360;
 //                seriesPre.appendData(newCurrent, true, 1000);
 
 
-                ((TextView) findViewById(R.id.graphBac)).setText("Your current BAC is around: " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6) + "%");
-                ((TextView) findViewById(R.id.gStom)).setText("There is approximately " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g ethanol in your stomach");
-                ((TextView) findViewById(R.id.gBlood)).setText("There is approximately " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g ethanol in your bloodstream");
-                ((TextView) findViewById(R.id.gMet)).setText("You have fully metabolized approximately " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g ethanol");
+                ((TextView) findViewById(R.id.graphBac)).setText("Current BAC:  " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6) + "%");
+                ((TextView) findViewById(R.id.gStom)).setText("Ethanol in stomach:         " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g");
+                ((TextView) findViewById(R.id.gBlood)).setText("Ethanol in bloodstream:  " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g");
+                ((TextView) findViewById(R.id.gMet)).setText("Ethanol metabolized:       " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g");
             }
         }
     }

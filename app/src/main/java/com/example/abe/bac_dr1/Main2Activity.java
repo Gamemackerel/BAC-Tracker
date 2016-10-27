@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -26,6 +27,7 @@ public class Main2Activity extends AppCompatActivity {
     String TAG = "console";
     private ResponseReceiver receiver;
     public static int drinks;
+    public static Calendar c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,10 @@ public class Main2Activity extends AppCompatActivity {
         if(!seshActive) {
             seshActive = true;
             ((TextView) findViewById(R.id.startButton)).setText("Drink");
+
+
+            c = Calendar.getInstance();
+            Log.d("time", "the current time is: " + c.getTime());
 
             String prefs = "s " + readFromFile();
             //prefs will be the param in msg of the intentService and it will

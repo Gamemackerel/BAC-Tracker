@@ -19,8 +19,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Hours since Start"
-        android:id="@+id/textView11"
+        android:text="Current BAC: "
+        android:id="@+id/graphBac"
+        android:layout_marginLeft="22dp"
+        android:textColor="#000000"
+        android:layout_marginTop="60dp"
         android:layout_below="@+id/graph"
         android:layout_centerHorizontal="true" />
 
@@ -28,20 +31,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Current BAC: "
-        android:id="@+id/graphBac"
-        android:layout_below="@+id/textView11"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="104dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Ethanol Consumed:"
         android:id="@+id/gStom"
-        android:layout_below="@+id/graphBac"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/gBlood"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="22dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -49,8 +43,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Ethanol Consumed:"
         android:id="@+id/gBlood"
-        android:layout_below="@+id/gStom"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginBottom="77dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/gStom" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,8 +53,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Ethanol Consumed:"
         android:id="@+id/gMet"
-        android:layout_below="@+id/gBlood"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/gStom"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="22dp" />
 
 </RelativeLayout>
 
