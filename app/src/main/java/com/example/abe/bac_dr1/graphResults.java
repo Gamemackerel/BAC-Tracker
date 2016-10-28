@@ -77,7 +77,7 @@ public class graphResults extends AppCompatActivity {
                 double[] graphPoints = intent.getDoubleArrayExtra(BACIntentService.DOUBLE_ARRAY);
                 GraphView graph = (GraphView) findViewById(R.id.graph);
                 GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
-                gridLabel.setLabelVerticalWidth(65);
+                gridLabel.setLabelVerticalWidth(90);
 
                 gridLabel.setLabelFormatter(new DefaultLabelFormatter() {
                     @Override
