@@ -47,6 +47,8 @@ public class Main2Activity extends AppCompatActivity {
             openFileInput("config.txt");
         } catch (FileNotFoundException e) {
             Log.d(TAG, "startApp: no config file found, go to settings");
+
+
             startActivity(new Intent(Main2Activity.this, MainActivity.class));
         }
 

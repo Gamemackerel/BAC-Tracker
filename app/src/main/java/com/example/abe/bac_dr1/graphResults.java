@@ -16,7 +16,6 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -124,7 +123,7 @@ public class graphResults extends AppCompatActivity {
                     if(graphPoints[i] == -1.0) {
                         currentX = (i + 1) * (1.0 / 360);
                         currentPointSeries.appendData(new DataPoint(currentX, graphPoints[i + 1]), true, 1);
-
+                        x--;
                     } else {
                         seriesPre.appendData(new DataPoint((x) * (1.0 / 360), graphPoints[i]), true, graphPoints.length);
                         x++;
@@ -139,7 +138,7 @@ public class graphResults extends AppCompatActivity {
                 graph.addSeries(currentPointSeries);
 //                graph.addSeries(seriesPost);
             } else {
-                                //BELOW: WHEN RECIEVING TEXT INTENT, APPEND TO SERIES PRE
+                                //BELOW: WHEN RECIEVING TEXT INTENT, USE TO UPDATE CURRENT POINT
                 String text = intent.getStringExtra(BACIntentService.PARAM_OUT_MSG);
                 double nextData = Double.parseDouble(text);
                 DataPoint newCurrent = new DataPoint(currentX, nextData);

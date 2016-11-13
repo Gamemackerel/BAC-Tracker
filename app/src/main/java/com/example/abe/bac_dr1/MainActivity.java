@@ -68,6 +68,18 @@ public class MainActivity extends AppCompatActivity {
             ((EditText) findViewById(R.id.userWeight)).setText("" + kgWeightFromFile);
 
         } catch (FileNotFoundException e) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage("This app provides a rough ESTIMATE of a users BAC, but dont use it wrong");
+            builder1.setCancelable(false);
+            builder1.setPositiveButton(
+                    "I agree",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
             Log.d(TAG, "no file available; user must put in settings for first time");
         }
     }

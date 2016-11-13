@@ -33,9 +33,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Ethanol Consumed:"
         android:id="@+id/gStom"
-        android:layout_above="@+id/gBlood"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="22dp" />
+        android:layout_below="@+id/gMet"
+        android:layout_alignRight="@+id/graphBac"
+        android:layout_marginRight="41dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,9 +43,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Ethanol Consumed:"
         android:id="@+id/gBlood"
-        android:layout_marginBottom="77dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/gStom" />
+        android:layout_marginTop="53dp"
+        android:layout_below="@+id/graphBac"
+        android:layout_alignStart="@+id/gMet" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,9 +53,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Ethanol Consumed:"
         android:id="@+id/gMet"
-        android:layout_above="@+id/gStom"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="22dp" />
+        android:layout_below="@+id/gBlood"
+        android:layout_alignRight="@+id/graphBac"
+        android:layout_marginRight="41dp" />
 
 </RelativeLayout>
 
