@@ -25,7 +25,7 @@ a relatively accurate estimation of their BAC, it is my hope that they will be m
 
 Both the video and snapshots are from the 9-15-16 build. Since then, I've done multiple bugfixes and polishing of the interface, but the function of the app has stayed more or less the same. The color scheme has *definitely* improved.
 
-The app will soon be on the play store, but you can try the most recent stable pre-release beta apk right now. 
+The app will soon be on the play store, but you can try the most recent pre-release beta apk right now. 
 ##![Nov-25 stable build](https://drive.google.com/file/d/0B76OztIMsr6HT0lPeVpuLU1JRTg/view?usp=sharing)
 
 
