@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Be Safe; The legal limit is 0.08"
+        android:text="Be Safe; The Legal Limit is 0.08%"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -116,11 +116,11 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignTop="@+id/textView3"
         android:layout_toEndOf="@+id/textView4"
         android:paddingLeft="80dp"
         android:layout_above="@+id/startButton"
-        android:id="@+id/tableLayout">
+        android:id="@+id/tableLayout"
+        android:layout_alignTop="@+id/drinkVolume">
 
         <TableRow
             android:layout_width="match_parent"
@@ -128,7 +128,7 @@
 
             <TextView
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="shot:            44.5mL"
+                android:text="           shot:  44.5mL"
                 android:id="@+id/textView16"
                 android:layout_column="0"
                 android:layout_width="wrap_content"
@@ -141,7 +141,7 @@
 
             <TextView
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="wine glass: 150mL"
+                android:text="wine glass:  150mL"
                 android:id="@+id/textView17"
                 android:layout_column="0"
                 android:layout_width="wrap_content"
@@ -158,7 +158,7 @@
 
             <TextView
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="12oz can:    355mL  "
+                android:text="   12oz can:  355mL"
                 android:id="@+id/textView18"
                 android:layout_column="0"
                 android:layout_width="wrap_content"
@@ -171,7 +171,7 @@
 
             <TextView
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="16oz pint:    473mL"
+                android:text="   16oz pint:  473mL"
                 android:id="@+id/textView19"
                 android:layout_column="0"
                 android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
 
             <TextView
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="24oz:            710mL"
+                android:text="           24oz:  710mL"
                 android:id="@+id/textView20"
                 android:layout_column="0"
                 android:layout_width="wrap_content"
@@ -199,7 +199,8 @@
         android:text="What are you drinking?"
         android:id="@+id/textView8"
         android:layout_above="@+id/drinkVolume"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:layout_width="wrap_content"

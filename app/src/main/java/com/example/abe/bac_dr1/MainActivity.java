@@ -69,10 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (FileNotFoundException e) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            builder1.setMessage("This app provides a rough ESTIMATE of a users BAC, but dont use it wrong");
+            builder1.setMessage("This app provides a rough ESTIMATE of a users BAC, it is not " +
+                    "to be used to make life/death decisions. \n If you feel like you might be too " +
+                    "drunk to drive a vehicle, then you should not drive a vehicle, regardless of " +
+                    "whether or not this app claims your BAC is under the limit.");
             builder1.setCancelable(false);
             builder1.setPositiveButton(
-                    "I agree",
+                    "I understand how this app should be used.",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
