@@ -1,5 +1,5 @@
 # BACestimate
-This Android Studio project is my first attempt at creating a complete mobile application. I came up with this idea while brainstorming how I could combine my interest in pharmocology with my newly learned programming skills into one fun but pragmatic project. While working on this project I learned a lot about app development, and also had a fun time figuring out how to model alcohol consumption using programming.
+This Android Studio project is my first attempt at creating a complete mobile application. I came up with this idea while brainstorming how I could combine my interest in pharmocology with my newly learned programming skills into a fun project. While working on this project I learned a lot about app development, and also had a fun time figuring out how to model alcohol consumption using programming.
 
 The app is designed for alcohol drinkers, and it seeks to provide a simple and convienent way to keep track of a
 user's Blood Alcohol Content as they engage in a session of drinking. You may have heard of the 'one drink an hour' rule for determining whether a drinker is safe to drive based on how many drinks they had.
