@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -63,9 +64,13 @@ public class Main2Activity extends AppCompatActivity {
         receiver = new ResponseReceiver();
         registerReceiver(receiver, filter);
         if (seshActive) {
-            ((TextView) findViewById(R.id.totalDrinks)).setText(Integer.toString(drinks));
+            if(drinks > 1) {
+                ((TextView) findViewById(R.id.totalDrinks)).setText("" + drinks + " drinks consumed");
+            } else {
+                ((TextView) findViewById(R.id.totalDrinks)).setText("" + drinks + " drink consumed");
+            }
             ((TextView) findViewById(R.id.startButton)).setText("Drink");
-            ((TextView) findViewById(R.id.bloodAlcoholContent)).setText(Double.toString(BACIntentService.bac.getBAC()).substring(0,6));
+            ((TextView) findViewById(R.id.bloodAlcoholContent)).setText(Double.toString(BACIntentService.bac.getBAC()).substring(0,6) + "%");
         }
     }
 
@@ -100,7 +105,8 @@ public class Main2Activity extends AppCompatActivity {
         if(!seshActive) {
             seshActive = true;
             ((TextView) findViewById(R.id.startButton)).setText("Drink");
-
+            ((TextView) findViewById(R.id.startButton)).setBackgroundColor(Color.parseColor("#d1003b"));
+            ((TextView) findViewById(R.id.startButton)).setTextColor(Color.WHITE);
 
             c = Calendar.getInstance();
             Log.d("time", "the current time is: " + c.getTime());
@@ -117,6 +123,8 @@ public class Main2Activity extends AppCompatActivity {
             Intent msgIntent = new Intent(this, BACIntentService.class);
             msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, prefs);
             startService(msgIntent);
+            Toast toast = Toast.makeText(getApplicationContext(), "BAC Tracking Session Initialized", Toast.LENGTH_SHORT);
+            toast.show();
         } else {
             takeShot();
         }
@@ -141,7 +149,11 @@ public class Main2Activity extends AppCompatActivity {
             alert11.show();
         } else {
             drinks++;
-            ((TextView) findViewById(R.id.totalDrinks)).setText("" + drinks);
+            if(drinks > 1) {
+                ((TextView) findViewById(R.id.totalDrinks)).setText("" + drinks + " drinks consumed");
+            } else {
+                ((TextView) findViewById(R.id.totalDrinks)).setText("" + drinks + " drink consumed");
+            }
             double volume = Double.parseDouble(((EditText) findViewById(R.id.drinkVolume)).getText().toString());
             double percent = Double.parseDouble(((EditText) findViewById(R.id.drinkPercent)).getText().toString());
             String drinkInfo = "t " + volume + " " + percent;
@@ -210,7 +222,7 @@ public class Main2Activity extends AppCompatActivity {
                 if (text.length() > 6) {
                     text = text.substring(0, 6);
                 }
-                result.setText(text);
+                result.setText(text + "%");
             }
         }
     }

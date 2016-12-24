@@ -40,20 +40,9 @@ public class graphResults extends AppCompatActivity {
         setContentView(R.layout.activity_graph_results);
 
 
-        IntentFilter filter = new IntentFilter(ResponseReceiver.ACTION_RESP);
-        filter.addCategory(Intent.CATEGORY_DEFAULT);
-        receiver = new ResponseReceiver();
-        registerReceiver(receiver, filter);
-
-
         Intent msgIntent = new Intent(this, BACIntentService.class);
         msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, "g");
         startService(msgIntent);
-
-        ((TextView) findViewById(R.id.graphBac)).setText("Current BAC:  " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6) + "%");
-        ((TextView) findViewById(R.id.gStom)).setText("Ethanol in stomach:         " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g");
-        ((TextView) findViewById(R.id.gBlood)).setText("Ethanol in bloodstream:  " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g");
-        ((TextView) findViewById(R.id.gMet)).setText("Ethanol metabolized:       " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g");
     }
 
     @Override
@@ -64,6 +53,34 @@ public class graphResults extends AppCompatActivity {
         } catch (IllegalArgumentException e) {
 
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(ResponseReceiver.ACTION_RESP);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        receiver = new ResponseReceiver();
+        registerReceiver(receiver, filter);
+        ((TextView) findViewById(R.id.graphBac)).setText("Current BAC:  " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6) + "%");
+        ((TextView) findViewById(R.id.gStom)).setText("Ethanol in Stomach:         " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g");
+        ((TextView) findViewById(R.id.gBlood)).setText("Ethanol in Bloodstream:  " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g");
+        ((TextView) findViewById(R.id.gMet)).setText("Ethanol Metabolized:       " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g");
+    }
+
+    public void soberAt(double hours) {
+        Double add = hours;
+        Log.d("time", "hours add: " + add);
+        long millisAdd = Math.round(add * 3.6 * (Math.pow(10,6)));
+        Log.d("time", "start time: " + Main2Activity.c.getTime());
+        long start = Main2Activity.c.getTimeInMillis();
+        Log.d("time", "start time millis: " + Main2Activity.c.getTimeInMillis());
+        Calendar k = Calendar.getInstance();
+        k.setTimeInMillis(start + millisAdd);
+        Log.d("time", "new Time: " + k.getTime());
+        DateFormat df = new SimpleDateFormat("h:mm a");
+        ((TextView) findViewById(R.id.soberAt)).setText("You should be fully sober by " + df.format(k.getTime()));
     }
 
     public class ResponseReceiver extends BroadcastReceiver {
@@ -107,7 +124,7 @@ public class graphResults extends AppCompatActivity {
                 });
 
                 seriesPre = new LineGraphSeries<DataPoint>();
-                seriesPost = new LineGraphSeries<DataPoint>();
+//                seriesPost = new LineGraphSeries<DataPoint>();  //This no longer exists
                 currentPointSeries = new PointsGraphSeries<DataPoint>();
 //                                warning = new LineGraphSeries<DataPoint>();
 //                                warning.appendData(new DataPoint(0, .08), true, 2);
@@ -125,12 +142,14 @@ public class graphResults extends AppCompatActivity {
                         currentPointSeries.appendData(new DataPoint(currentX, graphPoints[i + 1]), true, 1);
                         x--;
                     } else {
-                        seriesPre.appendData(new DataPoint((x) * (1.0 / 360), graphPoints[i]), true, graphPoints.length);
+                        seriesPre.appendData(new DataPoint((x) * (1.0 / 360), graphPoints[i]), false, graphPoints.length);
                         x++;
                     }
                 }
 
-
+                x--;
+                Log.d(TAG, "last value of array: " + graphPoints[graphPoints.length - 1]);
+                soberAt(x * (1.0 / 360));
 
                 Log.d("console", "graph onReceive: length: " + graphPoints.length + " " + Arrays.toString(graphPoints));
 
@@ -149,9 +168,9 @@ public class graphResults extends AppCompatActivity {
 
 
                 ((TextView) findViewById(R.id.graphBac)).setText("Current BAC:  " + Double.toString(BACIntentService.bac.getBAC()).substring(0,6) + "%");
-                ((TextView) findViewById(R.id.gStom)).setText("Ethanol in stomach:         " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g");
-                ((TextView) findViewById(R.id.gBlood)).setText("Ethanol in bloodstream:  " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g");
-                ((TextView) findViewById(R.id.gMet)).setText("Ethanol metabolized:       " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g");
+                ((TextView) findViewById(R.id.gStom)).setText("Ethanol in Stomach:         " + Double.toString(BACIntentService.bac.getgStomachEthanol()).substring(0,4) + "g");
+                ((TextView) findViewById(R.id.gBlood)).setText("Ethanol in Bloodstream:  " + Double.toString(BACIntentService.bac.getgBloodEthanol()).substring(0,4) + "g");
+                ((TextView) findViewById(R.id.gMet)).setText("Ethanol Metabolized:       " + Double.toString(BACIntentService.bac.getgMetabolizedEthanol()).substring(0,4) + "g");
             }
         }
     }

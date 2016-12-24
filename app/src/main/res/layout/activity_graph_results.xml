@@ -33,19 +33,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Ethanol Consumed:"
         android:id="@+id/gStom"
-        android:layout_below="@+id/gMet"
-        android:layout_alignRight="@+id/graphBac"
-        android:layout_marginRight="41dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Ethanol Consumed:"
-        android:id="@+id/gBlood"
-        android:layout_marginTop="53dp"
+        android:layout_marginRight="41dp"
         android:layout_below="@+id/graphBac"
-        android:layout_alignStart="@+id/gMet" />
+        android:layout_alignStart="@+id/graphBac"
+        android:layout_marginTop="39dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,9 +44,30 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Ethanol Consumed:"
         android:id="@+id/gMet"
+        android:layout_below="@+id/gStom"
+        android:layout_alignStart="@+id/gStom" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Ethanol Consumed:"
+        android:id="@+id/gBlood"
+        android:layout_below="@+id/gMet"
+        android:layout_alignStart="@+id/gMet" />
+
+    <TextView
+        android:text="SoberAt "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/gBlood"
-        android:layout_alignRight="@+id/graphBac"
-        android:layout_marginRight="41dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textStyle="normal|bold"
+        android:id="@+id/soberAt"
+        android:textAllCaps="false" />
 
 </RelativeLayout>
 

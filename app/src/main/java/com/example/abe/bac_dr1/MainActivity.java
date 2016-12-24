@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -116,57 +118,86 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert11 = builder1.create();
             alert11.show();
         } else {
-
-            //KILL BAC OBJECT WHEN SAVING NEW THING
-            Intent msgIntent = new Intent(this, BACIntentService.class);
-            msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, "x");
-            startService(msgIntent);
-            Main2Activity.seshActive = false;
-            Main2Activity.drinks = 0;
-
-            //evaluating gender from radioButtons
-            int genderChoice = ((RadioGroup) findViewById(R.id.gender)).getCheckedRadioButtonId();
-            Log.d(TAG, "gender choice is " + genderChoice);
-            boolean male = (genderChoice == ((RadioButton)findViewById(R.id.rBMale)).getId());
-            Log.d(TAG, "are you a male? : " + male);
-            //***********************************************************//
-
-            int bodyTypeChoice = this.getBodyType();
-            Log.d(TAG, "analyzed bodyType choice, you chose: " + bodyTypeChoice);
-
-
-
-
-
-
-            Log.d(TAG, "BodyType int selection is : " + bodyTypeChoice);
-            //userWeight
-            double userWeightKg = Double.parseDouble(((EditText) findViewById(R.id.userWeight)).getText().toString());
-            Log.d(TAG, "bodyType:");
-            Log.d(TAG, "are you male?: " + male);
-            //Write to user data file using the following user specified fields:
-            //userWeight, boolean pounds, boolean gender, int bodyType
-            //if weight was entered in pounds, convert to kilograms before writing
-            Log.d(TAG, "userWeight: " + userWeightKg);
-            Log.d(TAG, "weight is in pounds?: " + pounds);
-
-            //if the weight was entered in pounds, convert to kilograms
-            if (pounds) {
-                userWeightKg *= 0.453592;
+            if (Main2Activity.seshActive == true) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setMessage("Saving new user settings will end the current session." +
+                        " Are you sure you want to continue?");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton(
+                        "Save",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                processAndSave();
+                            }
+                        });
+                builder1.setNegativeButton(
+                        "Don't Save",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                startActivity(new Intent(MainActivity.this, Main2Activity.class));
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            } else {
+                processAndSave();
             }
-            // multiply kilograms by 1000 to get the integer weight in grams
-            int userWeightG = (int) (userWeightKg * 1000);
-            String toStore = bodyTypeChoice + " " + male + " " + userWeightG;
-            // wrote in following Syntax:
-            //      bodyType male userWeight
-            //          1    true   135
-            //  to read from this file split on whitespace
-            writeToFile(toStore);
-            Log.d(TAG, "on Write in MainActivity, file contains :" + readFromFile());
-
-
-            startActivity(new Intent(MainActivity.this, Main2Activity.class));
         }
+    }
+
+    public void processAndSave() {
+        //KILL BAC OBJECT WHEN SAVING NEW THING
+        Intent msgIntent = new Intent(this, BACIntentService.class);
+        msgIntent.putExtra(BACIntentService.PARAM_IN_MSG, "x");
+        startService(msgIntent);
+        Main2Activity.seshActive = false;
+        Main2Activity.drinks = 0;
+        Toast toast = Toast.makeText(getApplicationContext(), "BAC Tracking Session Ended", Toast.LENGTH_SHORT);
+        toast.show();
+
+        //evaluating gender from radioButtons
+        int genderChoice = ((RadioGroup) findViewById(R.id.gender)).getCheckedRadioButtonId();
+        Log.d(TAG, "gender choice is " + genderChoice);
+        boolean male = (genderChoice == ((RadioButton)findViewById(R.id.rBMale)).getId());
+        Log.d(TAG, "are you a male? : " + male);
+        //***********************************************************//
+
+        int bodyTypeChoice = this.getBodyType();
+        Log.d(TAG, "analyzed bodyType choice, you chose: " + bodyTypeChoice);
+
+
+
+
+
+
+        Log.d(TAG, "BodyType int selection is : " + bodyTypeChoice);
+        //userWeight
+        double userWeightKg = Double.parseDouble(((EditText) findViewById(R.id.userWeight)).getText().toString());
+        Log.d(TAG, "bodyType:");
+        Log.d(TAG, "are you male?: " + male);
+        //Write to user data file using the following user specified fields:
+        //userWeight, boolean pounds, boolean gender, int bodyType
+        //if weight was entered in pounds, convert to kilograms before writing
+        Log.d(TAG, "userWeight: " + userWeightKg);
+        Log.d(TAG, "weight is in pounds?: " + pounds);
+
+        //if the weight was entered in pounds, convert to kilograms
+        if (pounds) {
+            userWeightKg *= 0.453592;
+        }
+        // multiply kilograms by 1000 to get the integer weight in grams
+        int userWeightG = (int) (userWeightKg * 1000);
+        String toStore = bodyTypeChoice + " " + male + " " + userWeightG;
+        // wrote in following Syntax:
+        //      bodyType male userWeight
+        //          1    true   135
+        //  to read from this file split on whitespace
+        writeToFile(toStore);
+        Log.d(TAG, "on Write in MainActivity, file contains :" + readFromFile());
+
+        startActivity(new Intent(MainActivity.this, Main2Activity.class));
     }
 
     private void writeToFile(String data) {

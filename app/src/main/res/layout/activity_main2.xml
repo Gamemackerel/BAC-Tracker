@@ -18,25 +18,17 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/startButton"
-        android:layout_marginBottom="71dp"
-        android:onClick="startSesh"
-        android:layout_above="@+id/textView5"
-        android:layout_centerHorizontal="true" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:ems="3"
         android:id="@+id/drinkVolume"
-        android:text="355"
         android:layout_above="@+id/drinkPercent"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:text="355" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -46,22 +38,15 @@
         android:id="@+id/drinkPercent"
         android:layout_centerVertical="true"
         android:layout_alignStart="@+id/drinkVolume"
-        android:text="5.0"
-        android:paddingTop="20dp" />
+        android:paddingTop="20dp"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:text="5.0" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="mL"
-        android:id="@+id/textView3"
-        android:layout_above="@+id/drinkPercent"
-        android:layout_alignEnd="@+id/settingsButton" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:text="% ethanol"
         android:id="@+id/textView4"
         android:layout_alignBottom="@+id/drinkPercent"
@@ -95,32 +80,45 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/settingsButton"
-        android:onClick="goToSettings"
-        android:layout_alignTop="@+id/startButton"
-        android:layout_alignParentStart="true" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="What are you drinking?"
+        android:id="@+id/textView8"
+        android:layout_above="@+id/drinkVolume"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="graph"
-        android:id="@+id/graphButton"
-        android:layout_alignTop="@+id/startButton"
-        android:layout_alignParentEnd="true"
-        android:onClick="goToGraph"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/totalDrinks"
+        android:layout_above="@+id/textView5"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Fill in the Volume and ABV of your beverage and hit the 'drink' button when you finish it."
+        android:id="@+id/textView9"
+        android:textAlignment="center"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp" />
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toEndOf="@+id/textView4"
+        android:layout_height="wrap_content"
         android:paddingLeft="80dp"
-        android:layout_above="@+id/startButton"
         android:id="@+id/tableLayout"
-        android:layout_alignTop="@+id/drinkVolume">
+        android:layout_alignTop="@+id/drinkVolume"
+        android:layout_alignStart="@+id/startButton"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="14dp">
 
         <TableRow
             android:layout_width="match_parent"
@@ -195,31 +193,40 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="What are you drinking?"
-        android:id="@+id/textView8"
-        android:layout_above="@+id/drinkVolume"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp" />
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:text="mL"
+        android:id="@+id/textView3"
+        android:layout_above="@+id/drinkPercent"
+        android:layout_toEndOf="@+id/drinkVolume" />
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/totalDrinks"
-        android:layout_above="@+id/textView5"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
+        android:text="Start"
+        android:id="@+id/startButton"
+        android:layout_marginBottom="39dp"
+        android:onClick="startSesh"
+        android:layout_above="@+id/totalDrinks"
+        android:layout_centerHorizontal="true" />
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="\tThis app allows you to estimate your blood alcohol content using the volume and ABV of the beverage you&apos;re drinking. \n Just change the parameters if neccessary and hit the &apos;Drink&apos; button every time you finish a beverage."
-        android:id="@+id/textView9"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="false" />
+        android:text="graph"
+        android:id="@+id/graphButton"
+        android:onClick="goToGraph"
+        android:layout_alignBaseline="@+id/startButton"
+        android:layout_alignBottom="@+id/startButton"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:id="@+id/settingsButton"
+        android:onClick="goToSettings"
+        android:layout_alignBaseline="@+id/startButton"
+        android:layout_alignBottom="@+id/startButton"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

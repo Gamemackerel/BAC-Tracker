@@ -20,6 +20,7 @@ public class BACIntentService extends IntentService {
     public static final String PARAM_OUT_MSG = "omsg";
     public static final String DOUBLE_ARRAY = "dub[]";
     public static BAC bac;
+    public static Intent updater;
 
     public BACIntentService() {
         super("SimpleIntentService");
@@ -32,12 +33,10 @@ public class BACIntentService extends IntentService {
         Log.d(TAG, "BACIntentService: work order recieved, it was: " + msg);
 
         String[] userData = msg.split(" ");
-
         //3 possible instructions: start object, take shot, do metabolization calc, stop object
 
         //if the first char marker is s, then follow instructions for starting the BAC app
         if(msg.charAt(0) == 's') {
-
 
             Log.d(TAG, "starting BAC object with these parameters:" + Arrays.toString(userData));
 
@@ -51,9 +50,9 @@ public class BACIntentService extends IntentService {
 
 
             //start the UpdateSchedulerIntentService that gives a scheduled work order to update bac once every 10 seconds
-            Intent msgIntent = new Intent(this, BACUpdateSchedulerIntentService.class);
-            msgIntent.putExtra(BACUpdateSchedulerIntentService.PARAM_IN_MSG, "");
-            startService(msgIntent);
+            updater = new Intent(this, BACUpdateSchedulerIntentService.class);
+            updater.putExtra(BACUpdateSchedulerIntentService.PARAM_IN_MSG, "");
+            startService(updater);
         } else if(msg.charAt(0) == 't') {
             Double volume = Double.parseDouble(userData[1]);
             Double percentEth = Double.parseDouble(userData[2]);
@@ -77,7 +76,11 @@ public class BACIntentService extends IntentService {
             //end sesh
             //not sure if the user should ever manually do this, probably not.
             //maybe could be implemented by deleting the bac object by reassigning it to null
+            Log.d("updater", "trying to set nuke to true from BACintent");
             bac = null;
+            BACUpdateSchedulerIntentService.nuke = true;
+            this.stopForeground(true);
+            this.stopSelf();
         } else if(msg.charAt(0) == 'g' && bac != null) {
             // the graph activity asked me for graphing data in string form, let me get that from the BAC object
             // and broadcast it back to the graph activity
