@@ -1,8 +1,7 @@
-package com.example.abe.bac_dr1;
+package com.hamandeggs.abemiller.bactrack;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 import android.util.Log;
 
 import java.util.Date;
@@ -31,15 +30,18 @@ public class BACUpdateSchedulerIntentService extends IntentService {
         start();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     public void start() {
-        timer = new Timer("TaskName");
-        Date executionDate = new Date(); // no params = now
-        timer.scheduleAtFixedRate(task, executionDate, delay);
+        if(nuke) {
+            Log.d(TAG, "New update scheduler service created while nuke is active. " +
+                    "destroy this service and turn off nuke to preserve existing service");
+            nuke = false;
+            stopForeground(true);
+            stopSelf();
+        } else {
+            timer = new Timer("TaskName");
+            Date executionDate = new Date(); // no params = now
+            timer.scheduleAtFixedRate(task, executionDate, delay);
+        }
     }
 
     public void sendMsg() {

@@ -1,4 +1,4 @@
-package com.example.abe.bac_dr1;
+package com.hamandeggs.abemiller.bactrack;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

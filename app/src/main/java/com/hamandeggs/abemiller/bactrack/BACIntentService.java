@@ -1,7 +1,6 @@
-package com.example.abe.bac_dr1;
+package com.hamandeggs.abemiller.bactrack;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -11,8 +10,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Random;
 
 public class BACIntentService extends IntentService {
     private String TAG = "console";
@@ -76,7 +73,6 @@ public class BACIntentService extends IntentService {
             //end sesh
             //not sure if the user should ever manually do this, probably not.
             //maybe could be implemented by deleting the bac object by reassigning it to null
-            Log.d("updater", "trying to set nuke to true from BACintent");
             bac = null;
             BACUpdateSchedulerIntentService.nuke = true;
             this.stopForeground(true);

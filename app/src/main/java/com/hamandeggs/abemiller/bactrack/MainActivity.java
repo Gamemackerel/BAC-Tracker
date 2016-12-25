@@ -1,16 +1,13 @@
-package com.example.abe.bac_dr1;
+package com.hamandeggs.abemiller.bactrack;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -24,10 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                                 processAndSave();
+                                Toast toast = Toast.makeText(getApplicationContext(), "BAC Tracking Session Ended", Toast.LENGTH_SHORT);
+                                toast.show();
                             }
                         });
                 builder1.setNegativeButton(
@@ -154,8 +149,6 @@ public class MainActivity extends AppCompatActivity {
         startService(msgIntent);
         Main2Activity.seshActive = false;
         Main2Activity.drinks = 0;
-        Toast toast = Toast.makeText(getApplicationContext(), "BAC Tracking Session Ended", Toast.LENGTH_SHORT);
-        toast.show();
 
         //evaluating gender from radioButtons
         int genderChoice = ((RadioGroup) findViewById(R.id.gender)).getCheckedRadioButtonId();

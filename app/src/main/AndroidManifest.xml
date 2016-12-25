@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.abe.bac_dr1">
+    package="com.hamandeggs.abemiller.bactrack">
 
     <application
         android:allowBackup="true"
@@ -9,11 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.hamandeggs.abemiller.bactrack.MainActivity"
             android:label="User Settings"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".Main2Activity"
+            android:name="com.hamandeggs.abemiller.bactrack.Main2Activity"
             android:label="BAC Tracker"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -24,14 +24,14 @@
         </activity>
 
         <service
-            android:name=".BACIntentService"
+            android:name="com.hamandeggs.abemiller.bactrack.BACIntentService"
             android:exported="false" />
         <service
-            android:name=".BACUpdateSchedulerIntentService"
+            android:name="com.hamandeggs.abemiller.bactrack.BACUpdateSchedulerIntentService"
             android:exported="false" />
 
         <activity
-            android:name=".graphResults"
+            android:name="com.hamandeggs.abemiller.bactrack.graphResults"
             android:label="BAC Tracker">></activity>
     </application>
 
