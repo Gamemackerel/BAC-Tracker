@@ -1,4 +1,4 @@
-# BACestimate
+# BAC Tracker
 This Android Studio project is my first attempt at creating a complete mobile application. I came up with this idea while brainstorming how I could combine my interest in pharmocology with my newly learned programming skills into a fun project. While working on this project I learned a lot about app development, and also had a fun time figuring out how to model alcohol consumption using programming.
 
 The app is designed for alcohol drinkers, and it seeks to provide a simple and convienent way to keep track of a
@@ -23,8 +23,9 @@ a relatively accurate estimation of their BAC, it is my hope that they will be m
 
 [![Video Demo](http://i.imgur.com/CrcsNsg.png)](https://www.youtube.com/watch?v=cKxt05lS9II)
 
-Both the video and snapshots are from the 9-15-16 build. Since then, I've done multiple bugfixes and polishing of the interface, but the function of the app has stayed more or less the same. The color scheme has *definitely* improved.
+Both the video and snapshots are from the 9-15-16 early beta build. Since then, I've done multiple bugfixes and polishing of the interface, but the function of the app has stayed more or less the same. The color scheme has *definitely* improved. Get the newest version below.
 
-The app will soon be on the play store, but you can try the most recent pre-release beta apk right now. 
-##![Dec-24 stable build](https://drive.google.com/open?id=0B76OztIMsr6HR0JxSi12N01BZUE)
+##[Get the App Now from the Google Play Store](https://play.google.com/store/apps/details?id=com.hamandeggs.abemiller.bactrack)
+
+
 
